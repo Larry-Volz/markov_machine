@@ -8,7 +8,7 @@ class MarkovMachine {
   constructor(text) {
     let words = text.split(/[ \r\n]+/); //strips spaces, linebreaks, makes array
     this.words = words.filter(c => c  !== ""); //just seems to screw things up - doesn't make sense
-    this.makeChains(words);
+    this.makeChains();
   }
 
   /** set markov chains:
@@ -16,15 +16,15 @@ class MarkovMachine {
    *  for text of "the cat in the hat", chains will be
    *  {"the": ["cat", "hat"], "cat": ["in"], "in": ["the"], "hat": [null]} */
 
-  makeChains(words) {
+  makeChains() {
     // TODO
-    console.log("this.words in makeChains", this.words)
-    console.log("words in makeChains", words);
+    // console.log("this.words in makeChains", this.words)
+    // console.log("words in makeChains", this.words);
 
     let chains = {};
-    for (let i = 0; i < words.length; i++){
-      let currentWord = words[i];
-      let nextWord = words[i+1];
+    for (let i = 0; i < this.words.length; i++){
+      let currentWord = this.words[i];
+      let nextWord = this.words[i+1] || null;
 
       if (!(currentWord in chains)) {
         chains[currentWord]=[nextWord];
@@ -33,33 +33,56 @@ class MarkovMachine {
       }
     }
     this.chains = chains;
-    console.log(chains);
-    return chains
+    return this.chains
   }
-
-
+  
+  //pick a random number for following word from array 
+  static pickRandom(arr){
+    let num = Math.floor(Math.random() * arr.length);
+    console.log("random num:", num);
+    return arr[num];
+  }
+  
   /** return random text from chains */
-
+  
   makeText(numWords = 100) {
-    // TODO
     //make list of keys from chain
-    let count = 0;
-    let generatedText = "";
-
+    this.keys = Object.keys(this.chains); 
+    //QUESTION - REVIEW TEACHER'S SOLUTION WITH MAPS
+    
     //pick randomWord from keys
-    //make uppercase
+    let currentWord = MarkovMachine.pickRandom(this.keys); 
+    // console.log("currentWord", currentWord);
 
-    while (count < numWords){
+    let generatedText = []; 
+    //QUESTION: WHY ARRAY/JOIN?
+
+    currentWord = MarkovMachine.pickRandom(this.keys);
+    
+    while (generatedText.length < numWords && currentWord !== null){
       //add randomWord to generatedText
+      generatedText.push(currentWord);
       //pick linkedWord from randomWord values
+      // let inx = this.chains[currentWord].length;
+      
+      let linkedWord = MarkovMachine.pickRandom(this.chains[currentWord]); 
+      console.log("random linked word from array",linkedWord);
       //is it null?
       //yes -> add period and pick a new randomWrd from keys
-      //no -> add space
-      randomWord = linkedWord;
-      count++;
+      if (! linkedWord) {
+        generatedText.push(".");
+        currentWord = MarkovMachine.pickRandom(this.keys);
+      } else {
+        //no -> add space
+        currentWord = linkedWord;
+        generatedText.push(currentWord);
+      }
+      // randomWord = linkedWord;
     }
+    console.log(generatedText);
     return generatedText;
   }
 }
 
 const hitchikers = new MarkovMachine(text);
+hitchikers.makeText();
