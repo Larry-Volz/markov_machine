@@ -46,24 +46,20 @@ class MarkovMachine {
   /** return random text from chains */
   
   makeText(numWords = 100) {
-    //make list of keys from chain
-    this.keys = Object.keys(this.chains); 
     //QUESTION - REVIEW TEACHER'S SOLUTION WITH MAPS
+
+    this.keys = Object.keys(this.chains); 
     
-    //pick randomWord from keys
+    //First word of series
     let currentWord = MarkovMachine.pickRandom(this.keys); 
-    // console.log("currentWord", currentWord);
 
     let generatedText = []; 
-    //QUESTION: WHY ARRAY/JOIN?
 
-    currentWord = MarkovMachine.pickRandom(this.keys);
     
     while (generatedText.length < numWords && currentWord !== null){
       //add randomWord to generatedText
-      generatedText.push(currentWord);
+      // generatedText.push(currentWord);
       //pick linkedWord from randomWord values
-      // let inx = this.chains[currentWord].length;
       
       let linkedWord = MarkovMachine.pickRandom(this.chains[currentWord]); 
       console.log("random linked word from array",linkedWord);
