@@ -72,12 +72,20 @@ class MarkovMachine {
         currentWord = linkedWord;
         generatedText.push(currentWord);
       }
-      // randomWord = linkedWord;
+      this.generatedText = generatedText;
     }
-    console.log(generatedText);
-    return generatedText;
+    
+    return Object.values(this.generatedText).join(" ");
   }
 }
 
-const hitchikers = new MarkovMachine(text);
-hitchikers.makeText();
+//FOR TESTING
+// const hitchikers = new MarkovMachine(text);
+// let result=hitchikers.makeText();
+
+// console.log(result);
+
+
+module.exports = {
+  MarkovMachine
+}
