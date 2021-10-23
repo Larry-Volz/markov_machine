@@ -7,8 +7,7 @@ class MarkovMachine {
 
   constructor(text) {
     let words = text.split(/[ \r\n]+/); //strips spaces, linebreaks, makes array
-    this.words = words.filter(c => c  == "");
-    // console.log(words)
+    this.words = words.filter(c => c  !== ""); //just seems to screw things up - doesn't make sense
     this.makeChains(words);
   }
 
@@ -19,22 +18,21 @@ class MarkovMachine {
 
   makeChains(words) {
     // TODO
+    console.log("this.words in makeChains", this.words)
+    console.log("words in makeChains", words);
+
     let chains = {};
-    //for each word in the array
     for (let i = 0; i < words.length; i++){
       let currentWord = words[i];
       let nextWord = words[i+1];
-      //is currentWord already in the chains?
-      //no
-        //chains += {currentWord:[nextWord] pair in chains
+
       if (!(currentWord in chains)) {
         chains[currentWord]=[nextWord];
       } else {
-        //yes
-          //add nextWord to nextWord array for currentWord object pair
         chains[currentWord].push(nextWord);
       }
     }
+    this.chains = chains;
     console.log(chains);
     return chains
   }
