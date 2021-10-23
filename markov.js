@@ -18,8 +18,6 @@ class MarkovMachine {
 
   makeChains() {
     // TODO
-    // console.log("this.words in makeChains", this.words)
-    // console.log("words in makeChains", this.words);
 
     let chains = {};
     for (let i = 0; i < this.words.length; i++){
@@ -39,7 +37,6 @@ class MarkovMachine {
   //pick a random number for following word from array 
   static pickRandom(arr){
     let num = Math.floor(Math.random() * arr.length);
-    console.log("random num:", num);
     return arr[num];
   }
   
@@ -54,6 +51,7 @@ class MarkovMachine {
     let currentWord = MarkovMachine.pickRandom(this.keys); 
 
     let generatedText = []; 
+    let randomWord ="";
 
     
     while (generatedText.length < numWords && currentWord !== null){
@@ -62,12 +60,13 @@ class MarkovMachine {
       //pick linkedWord from randomWord values
       
       let linkedWord = MarkovMachine.pickRandom(this.chains[currentWord]); 
-      console.log("random linked word from array",linkedWord);
-      //is it null?
-      //yes -> add period and pick a new randomWrd from keys
+      // console.log("random linked word from array",linkedWord);
+      //if null -> add period and pick a new randomWrd from keys
       if (! linkedWord) {
         generatedText.push(".");
-        currentWord = MarkovMachine.pickRandom(this.keys);
+        randomWord = MarkovMachine.pickRandom(this.keys);
+        currentWord = randomWord.charAt(0).toUpperCase+randomWord.slice(1);
+
       } else {
         //no -> add space
         currentWord = linkedWord;
