@@ -11,6 +11,11 @@ const axios = require("./axios")
 
 const { MarkovMachine } = require("./markov")
 
+function outputText(text){
+    let mm = new MarkovMachine(text);
+    console.log(mm.makeText());
+}
+
 async function textRead(path){
     fs.readFile(path, 'utf8', function(err, data) {
         if (err) {
@@ -18,17 +23,24 @@ async function textRead(path){
             process.exit(1);
         }
         else {
-
-            // otherwise success
-            // console.log(`read within textRead: ${data}`);
-            
-            let mm = new MarkovMachine(data);
-            console.log(mm.makeText());
-            return data;
+            // SUCCESS            
+            outputText(data)
         }
     });
 }
-    
+
+async function urlRead(path){
+    let resp;
+  
+    try {
+      resp = await axios.get(path);
+    } catch (err) {
+      console.error(`Cannot retrieve URL: ${path}: ${err}`);
+      process.exit(1);
+    }
+    // SUCCESS            
+    outputText(resp.data)
+  }
 
 
 
@@ -37,18 +49,14 @@ const path = process.argv[3];
 
 if (textOrFile == "file") {
 
-    textRead(path)
+    textRead(path);
 
 } else if (textOrFile == "url") {
-    console.log("textOrFile =", textOrFile)
-    //read in with axios
-    //console log it
-    //handle errors
+
+    urlRead(path);
     
 } else {
-    console.log("textOrFile =", textOrFile)
-    //handle errors
-    
+    console.log("2nd parameter must be file or url, not ", textOrFile)    
 }
 
 

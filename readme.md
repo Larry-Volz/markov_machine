@@ -7,3 +7,8 @@ To run it:
 
 $ node makeText.js url http://www.gutenberg.org/files/11/11-0.txt
 ... generated text from that URL ...``
+
+## Lessons worth remembering:
+
+- fs.readFile() is ASYNCHRONOUS - so use async and pack all the functionality inside the else after the error-handling
+- review axios!  Note try-catch there (as opposed to if/else in fs.readFile)
