@@ -9,6 +9,7 @@
   "author": "Larry Volz",
   "license": "ISC",
   "dependencies": {
-    "Math": "0.0.1-security"
+    "Math": "0.0.1-security",
+    "axios": "file:axios"
   }
 }
